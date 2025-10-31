@@ -10,5 +10,8 @@ public interface ExpenseService {
     void viewSummaryAll();
     void viewSummaryByMonth(Scanner scanner);
 	void updateExpense(Scanner scanner);
-	
+	void filterByCategory(Scanner scanner);
+	void exportToCSV();
+	void setMonthlyBudget(Scanner scanner);
+	void checkBudgetExceeded(Expense expense);
 }

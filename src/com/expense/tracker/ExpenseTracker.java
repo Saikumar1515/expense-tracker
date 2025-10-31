@@ -14,12 +14,15 @@ public class ExpenseTracker {
             System.out.println("""
                     \nChoose an option:
                     1. Add Expense
-                    2. View Expenses
+                    2. View All Expenses
                     3. Update Expense
                     4. Delete Expense
-                    5. View Summary (All)
+                    5. View Summary (All Expenses)
                     6. View Summary by Month
-                    7. Exit
+                    7. Filter By Category
+                    8. Set Monthly Budget
+                    9, Export Expenses to CSV
+                    10. Exit
                     """);
 
             System.out.print("Enter your choice: ");
@@ -33,7 +36,10 @@ public class ExpenseTracker {
                 case 4 -> service.deleteExpense(scanner);
                 case 5 -> service.viewSummaryAll();
                 case 6 -> service.viewSummaryByMonth(scanner);
-                case 7 -> {
+                case 7 -> service.filterByCategory(scanner);
+                case 8 -> service.setMonthlyBudget(scanner);
+                case 9 -> service.exportToCSV();
+                case 10 -> {
                     System.out.println("Exiting... Goodbye!");
                     scanner.close();
                     return;
