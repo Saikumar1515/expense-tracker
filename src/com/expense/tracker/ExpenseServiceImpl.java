@@ -25,20 +25,29 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 		Expense newExpenses = new Expense(description, amount, category);
 		expenses.add(newExpenses);
-		System.out.println(" Expense added successfully!");
+		System.out.println("Expense added successfully!");
 
 	}
 
 	@Override
 	public void viewExpenses() {
 		if (expenses.isEmpty()) {
-			System.out.println("No expenses found.");
+			System.out.println("No expenses added yet");
 			return;
 		}
-		System.out.println("\nID\tDate\t\tDescription\tAmount");
+
+		System.out.println("\n================================================================");
+		System.out.println(
+				String.format("%-5s %-12s %-20s %-15s %-10s", "ID", "Date", "Description", "Category", "Amount"));
+		System.out.println("==================================================================");
+
+		int id = 1;
 		for (Expense e : expenses) {
-			System.out.println(e);
+			System.out.println(String.format("%-5d %-12s %-20s %-15s Rs.%.2f", id++, e.getDate(), e.getDescription(),
+					e.getCategory(), e.getAmount()));
 		}
+
+		System.out.println("==================================================================");
 	}
 
 	@Override
@@ -80,8 +89,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 		}
 		double total = expenses.stream().mapToDouble(Expense::getAmount).sum();
 		double average = total / expenses.size();
-		System.out.printf("Total expenses: $%.2f%n", total);
-		System.out.printf("Average expense: $%.2f", average);
+		System.out.printf("Total expenses: Rs.%.2f\n", total);
+		System.out.printf("Average expense:Rs.%.2f\n", average);
 	}
 
 	@Override
@@ -113,24 +122,28 @@ public class ExpenseServiceImpl implements ExpenseService {
 		}
 
 		double total = monthly.stream().mapToDouble(Expense::getAmount).sum();
-		System.out.printf("Total expenses for %s: $%.2f%n", month, total);
+		System.out.printf("Total expenses for %s: Rs.%.2f", month, total);
 	}
 
 	@Override
 	public void updateExpense(Scanner scanner) {
 		if (expenses.isEmpty()) {
-			System.out.println("No expenses to update.");
+			System.out.println(" No expenses to update.");
 			return;
 		}
 
 		System.out.print("Enter the description of the expense you want to update: ");
 		String searchDescription = scanner.nextLine().trim();
 
-		List<Expense> matched = expenses.stream().filter(e -> e.getDescription().equalsIgnoreCase(searchDescription))
-				.toList();
+		List<Expense> matched = new ArrayList<>();
+		for (Expense e : expenses) {
+			if (e.getDescription().equalsIgnoreCase(searchDescription)) {
+				matched.add(e);
+			}
+		}
 
 		if (matched.isEmpty()) {
-			System.out.println("No expenses found with description: " + searchDescription);
+			System.out.println(" No expenses found with description: " + searchDescription);
 			return;
 		}
 
@@ -139,31 +152,47 @@ public class ExpenseServiceImpl implements ExpenseService {
 		if (matched.size() == 1) {
 			expenseToUpdate = matched.get(0);
 		} else {
-			System.out.println("Multiple expenses found with that description:");
-			System.out.println("\nID\tDate\t\tDescription\tAmount");
-			matched.forEach(System.out::println);
+			System.out.println("\nMultiple expenses found with that description:\n");
+			System.out.println("--------------------------------------------------------------");
+			System.out.printf("%-5s %-12s %-20s %-15s %-10s%n", "ID", "Date", "Description", "Category", "Amount");
+			System.out.println("--------------------------------------------------------------");
 
+			for (int i = 0; i < matched.size(); i++) {
+				Expense e = matched.get(i);
+				System.out.printf("%-5d %-12s %-20s %-15s  Rs.%.2f\n", (i + 1), e.getDate(), e.getDescription(),
+						e.getCategory(), e.getAmount());
+			}
+
+			System.out.println("--------------------------------------------------------------");
 			System.out.print("Enter the ID of the expense you want to update: ");
+			while (!scanner.hasNextInt()) {
+				System.out.print(" Please enter a valid numeric ID: ");
+				scanner.next();
+			}
+
 			int id = scanner.nextInt();
 			scanner.nextLine();
 
-			expenseToUpdate = matched.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
-
-			if (expenseToUpdate == null) {
+			if (id < 1 || id > matched.size()) {
 				System.out.println("Invalid ID selected. No expense updated.");
 				return;
 			}
+			expenseToUpdate = matched.get(id - 1);
 		}
 
 		System.out.print("Enter new description (leave blank to keep same): ");
 		String newDesc = scanner.nextLine().trim();
 
 		System.out.print("Enter new amount (or -1 to keep same): ");
+		while (!scanner.hasNextDouble()) {
+			System.out.print(" Please enter a valid number for amount: ");
+			scanner.next();
+		}
 		double newAmount = scanner.nextDouble();
 		scanner.nextLine();
 
-		System.out.println("Enter new category: ");
-		String newCategory = scanner.nextLine();
+		System.out.print("Enter new category (leave blank to keep same): ");
+		String newCategory = scanner.nextLine().trim();
 
 		if (!newDesc.isEmpty()) {
 			expenseToUpdate.setDescription(newDesc);
@@ -180,18 +209,32 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Override
 	public void filterByCategory(Scanner scanner) {
-		System.out.println("Enter category to filter by: ");
-		String category = scanner.nextLine();
+		if (expenses.isEmpty()) {
+			System.out.println("No expenses available.");
+			return;
+		}
+
+		System.out.print("Enter category to filter by: ");
+		String category = scanner.nextLine().trim();
 
 		List<Expense> filtered = expenses.stream().filter(e -> e.getCategory().equalsIgnoreCase(category)).toList();
 
 		if (filtered.isEmpty()) {
-			System.out.println("No expenses found for category: " + category);
-
+			System.out.println("No expenses found in category '" + category + "'.");
+			return;
 		}
 
-		System.out.println("\n Expenses in category '" + category + "':");
-		filtered.forEach(e -> System.out.println(e.toString()));
+		System.out.println("\nExpenses in category '" + category + "':\n");
+		System.out.println("--------------------------------------------------------------");
+		System.out.printf("%-5s %-12s %-20s %-15s %-10s%n", "ID", "Date", "Description", "Category", "Amount");
+		System.out.println("--------------------------------------------------------------");
+
+		for (Expense e : filtered) {
+			System.out.printf("%-5d %-12s %-20s %-15s Rs.%-10.2f%n", e.getId(), e.getDate(), e.getDescription(),
+					e.getCategory(), e.getAmount());
+		}
+
+		System.out.println("--------------------------------------------------------------");
 
 	}
 
@@ -221,7 +264,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		try (FileWriter writer = new FileWriter("expenses.csv")) {
 			writer.write("Description,Amount,Category,Date\\n");
 			for (Expense e : expenses) {
-				writer.write(String.format("%s,%.2f,%s,%s\n", e.getDescription(), e.getAmount(), e.getCategory(),
+				writer.write(String.format("%s,Rs.%.2f,%s,%s\n", e.getDescription(), e.getAmount(), e.getCategory(),
 						e.getDate()));
 			}
 			System.out.println("Expenses exported successfully to 'expenses.csv");
