@@ -1,18 +1,36 @@
 # expense-tracker
-A simple expense tracker application to manage your finances.
+A simple Command-Line Interface (CLI) application to track personal expenses. Built in Java, this tool allows you to add, view, update, delete, and analyze your expenses efficiently.
 
 #Features
 
-1) Add Expense: add a new expense with description and amount.
-2) View Expenses: Display all record expenses.
-3) Update Expenses: Update Existing Expenses. (handles duplicates by selection).
-4) View all Expenses: Display all summary of expenses
-5) View Expenses by month: Display expenses by month by entering a number of a month.
+-> Add new expenses with description, amount, category, and date.
+
+-> View all expenses in a formatted table.
+
+-> Update or delete existing expenses.
+
+-> View expense summary:
+
+-> Total and average expenses.
+
+-> Monthly expense summary.
+
+-> Filter expenses by category.
+
+-> Set a monthly budget with warnings if exceeded.
+
+-> Export expenses to a CSV file for external use.
 
 
-# Run the application:
+# Compile the Java files::
 javac com/expense/tracker/*.java
 java com.expense.tracker.ExpenseTracker
+
+CSV Export
+
+Expenses can be exported to a file named expenses.csv.
+
+CSV columns: Description,Amount,Category,Date.
 
 #Github Url:
 https://github.com/Saikumar1515/expense-tracker.git
