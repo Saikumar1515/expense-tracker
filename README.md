@@ -9,7 +9,7 @@ A simple Command-Line Interface (CLI) application to track personal expenses. Bu
 
 -> Update or delete existing expenses.
 
--> View expense summary:
+-> View expense summary
 
 -> Total and average expenses.
 
@@ -35,5 +35,5 @@ CSV columns: Description,Amount,Category,Date.
 #GitHub Repository:
 https://github.com/Saikumar1515/expense-tracker
 
-#project source:
-https://roadmap.sh/projects/expense-tracker
+## Project Source
+This project was built as part of the **[GitHub User Activity Project on roadmap.sh] (https://roadmap.sh/projects/expense-tracker)
