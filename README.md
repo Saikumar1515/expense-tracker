@@ -32,8 +32,8 @@ Expenses can be exported to a file named expenses.csv.
 
 CSV columns: Description,Amount,Category,Date.
 
-#Github Url:
+#GitHub Repository:
 https://github.com/Saikumar1515/expense-tracker
 
-#project source
+#project source:
 https://roadmap.sh/projects/expense-tracker
