@@ -35,5 +35,5 @@ CSV columns: Description,Amount,Category,Date.
 #GitHub Repository:
 https://github.com/Saikumar1515/expense-tracker
 
-## Project Source
+#project URL
 This project was built as part of the **[GitHub User Activity Project on roadmap.sh] (https://roadmap.sh/projects/expense-tracker)
