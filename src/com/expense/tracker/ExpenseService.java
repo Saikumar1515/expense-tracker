@@ -1,17 +1,22 @@
 package com.expense.tracker;
 
-import java.util.Scanner;
-
 public interface ExpenseService {
 
-	void addExpense(Scanner scanner);
-    void viewExpenses();
-    void deleteExpense(Scanner scanner);
-    void viewSummaryAll();
-    void viewSummaryByMonth(Scanner scanner);
-	void updateExpense(Scanner scanner);
-	void filterByCategory(Scanner scanner);
+	void addExpense();
+
+	void viewExpenses();
+
+	void deleteExpense();
+
+	void viewSummaryAll();
+
+	void viewSummaryByMonth();
+
+	void updateExpense();
+
+	void filterByCategory();
+
 	void exportToCSV();
-	void setMonthlyBudget(Scanner scanner);
-	void checkBudgetExceeded(Expense expense);
+
+	void setMonthlyBudget();
 }

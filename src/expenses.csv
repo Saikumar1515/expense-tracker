@@ -1,2 +1,4 @@
-Description,Amount,Category,Date\nFood,Rs.3300.00,Food,2025-11-03
-Shopping,Rs.600.00,Shopping,2025-11-03
+Description,Amount,Category,Date
+Shopping,Rs.800.00,Shirts,2025-11-03
+Shopping,Rs.600.00,Pant,2025-11-03
+Food,Rs.1400.00,Food,2025-11-03
