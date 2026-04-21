@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {
-        "http://localhost:3000",
-        "https://expense-tracker-1-x1hc.onrender.com/"
-})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/expenses")
 public class ExpenseController {
