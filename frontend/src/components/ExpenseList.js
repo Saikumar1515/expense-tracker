@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { fetchExpenses } from "../services/api";
 
 function ExpenseList({ refresh }) {
@@ -8,7 +8,8 @@ function ExpenseList({ refresh }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const loadData = async () => {
+  //
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError("");
 
@@ -20,11 +21,12 @@ function ExpenseList({ refresh }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, sort]);
 
+  //
   useEffect(() => {
     loadData();
-  }, [category, sort, refresh]);
+  }, [loadData, refresh]);
 
   // Total calculation
   const total = expenses.reduce(
