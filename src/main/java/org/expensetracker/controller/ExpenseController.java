@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://expense-tracker-1-x1hc.onrender.com/"
+})
 @RestController
 @RequestMapping("/expenses")
 public class ExpenseController {
@@ -36,7 +39,7 @@ public class ExpenseController {
     }
 
     // Get Expenses (Filter + Sort)
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Expense>> getExpenses(
             @RequestParam(required = false) String category,
             @RequestParam(required = false, defaultValue = "desc") String sort) {
