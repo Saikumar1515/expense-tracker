@@ -18,30 +18,24 @@ public class ExpenseController {
     @Autowired
     private ExpenseService service;
 
-    // Create Expense
     @PostMapping
     public ResponseEntity<Expense> createExpense(
-            @Valid @RequestBody ExpenseRequest request,
+            @RequestBody ExpenseRequest request,
             @RequestHeader(value = "Idempotency-Key", required = false) String key) {
 
-        // Handle missing key (basic fallback)
         if (key == null || key.isEmpty()) {
             key = String.valueOf(System.currentTimeMillis());
         }
 
-        Expense expense = service.createExpense(request, key);
-
-        // 201 Created is more correct than 200
-        return ResponseEntity.status(201).body(expense);
+        return ResponseEntity.status(201)
+                .body(service.createExpense(request, key));
     }
 
-    // Get Expenses (Filter + Sort)
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Expense>> getExpenses(
             @RequestParam(required = false) String category,
-            @RequestParam(required = false, defaultValue = "desc") String sort) {
+            @RequestParam(defaultValue = "desc") String sort) {
 
-        List<Expense> expenses = service.getExpenses(category, sort);
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(service.getExpenses(category, sort));
     }
 }

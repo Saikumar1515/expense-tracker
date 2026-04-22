@@ -17,52 +17,35 @@ public class ExpenseService {
     @Autowired
     private ExpenseRepository repository;
 
-    public Expense createExpense(ExpenseRequest request, String idempotencyKey) {
+    public Expense createExpense(ExpenseRequest request, String key) {
 
-        //  Idempotency check
-        Optional<Expense> existing = repository.findByIdempotencyKey(idempotencyKey);
-        if (existing.isPresent()) {
-            return existing.get();
-        }
-
-        //  Business validation
-        if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
-        }
-
-        if (request.getDate() == null) {
-            throw new IllegalArgumentException("Date is required");
-        }
-
-        //  DTO → Entity mapping
-        Expense expense = new Expense();
-        expense.setAmount(request.getAmount());
-        expense.setCategory(request.getCategory());
-        expense.setDescription(request.getDescription());
-        expense.setDate(request.getDate());
-
-        // System fields
-        expense.setCreatedAt(LocalDateTime.now());
-        expense.setIdempotencyKey(idempotencyKey);
-
-        return repository.save(expense);
+        return repository.findByIdempotencyKey(key)
+                .orElseGet(() -> {
+                    Expense e = new Expense();
+                    e.setAmount(request.getAmount());
+                    e.setCategory(request.getCategory());
+                    e.setDescription(request.getDescription());
+                    e.setDate(request.getDate());
+                    e.setCreatedAt(LocalDateTime.now());
+                    e.setIdempotencyKey(key);
+                    return repository.save(e);
+                });
     }
 
     public List<Expense> getExpenses(String category, String sort) {
 
-        //  Safe handling (avoid null pointer)
-        boolean isDesc = (sort == null) || sort.equalsIgnoreCase("date_desc");
+        boolean asc = "asc".equalsIgnoreCase(sort);
 
-        //  Filter + Sort
-        if (category != null && !category.trim().isEmpty()) {
-            return isDesc
-                    ? repository.findByCategoryIgnoreCaseOrderByDateDesc(category)
-                    : repository.findByCategoryIgnoreCaseOrderByDateAsc(category);
+        List<Expense> list;
+
+        if (category != null && !category.isEmpty()) {
+            list = repository.findByCategoryIgnoreCase(category);
+        } else {
+            list = asc
+                    ? repository.findAllByOrderByDateAsc()
+                    : repository.findAllByOrderByDateDesc();
         }
 
-        //  Only Sort
-        return isDesc
-                ? repository.findAllByOrderByDateDesc()
-                : repository.findAllByOrderByDateAsc();
+        return list;
     }
 }
