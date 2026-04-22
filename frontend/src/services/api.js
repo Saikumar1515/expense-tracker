@@ -1,11 +1,8 @@
 const BASE_URL = "https://expense-tracker-1-x1hc.onrender.com/expenses";
 
 export const fetchExpenses = async (category, sort) => {
-  let url = `${BASE_URL}/expenses?sort=${sort}`;
-
-  if (category) {
-    url += `&category=${category}`;
-  }
+  let url = `${BASE_URL}?sort=${sort}`;
+  if (category) url += `&category=${category}`;
 
   const res = await fetch(url);
 
@@ -15,11 +12,13 @@ export const fetchExpenses = async (category, sort) => {
 };
 
 export const createExpense = async (expense) => {
-  const res = await fetch(`${BASE_URL}/expenses`, {
+  const key = Date.now().toString();
+
+  const res = await fetch(BASE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Idempotency-Key": Date.now().toString(),
+      "Idempotency-Key": key,
     },
     body: JSON.stringify(expense),
   });
