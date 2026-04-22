@@ -1,4 +1,4 @@
-const BASE_URL = "https://expense-tracker-1-x1hc.onrender.com";
+const BASE_URL = "https://expense-tracker-1-x1hc.onrender.com/expenses";
 
 export const fetchExpenses = async (category, sort) => {
   let url = `${BASE_URL}/expenses?sort=${sort}`;
