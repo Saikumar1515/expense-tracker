@@ -36,7 +36,7 @@ public class ExpenseController {
     }
 
     // Get Expenses (Filter + Sort)
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Expense>> getExpenses(
             @RequestParam(required = false) String category,
             @RequestParam(required = false, defaultValue = "desc") String sort) {
